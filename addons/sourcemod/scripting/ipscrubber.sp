@@ -2,8 +2,8 @@
 *************************************************************************
 IP Scrubber
 Description:
-    Scrubs IP information sent by users to the server from the logs so that
-    client-side commands to obtain user info cannot be used effectively.
+    Scrubs IP information from being sent to other users so that
+    client-side commands used to obtain user info cannot be used effectively.
 *************************************************************************
 *************************************************************************
 This plugin is free software: you can redistribute 

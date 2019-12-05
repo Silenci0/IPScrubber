@@ -21,30 +21,36 @@ along with this plugin.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************
 *************************************************************************/
 #pragma semicolon 1
-#include <sourcemod>
-#define PLUGIN_VERSION "1.0"
 
-public Plugin:myinfo = 
+#include <sourcemod>
+#define PLUGIN_VERSION "1.1.0"
+
+#pragma newdecls required
+
+public Plugin myinfo = 
 {
     name = "IP Scrubber",
     author = "Original by shavit, Modified by Mr.Silence",
-    description = "WHY CANT I GET THEM EYEPEES?! :>",
+    description = "Removes the IP address from being echoed out to game clients from the server.",
     version = PLUGIN_VERSION
 }
 
-public OnPluginStart()
+public void OnPluginStart()
 {
     // Hook all the things!
     HookEvent("player_connect", Player_Connect, EventHookMode_Pre);
 }
 
-public Action:Player_Connect(Handle:gameevent, const String:Name[], bool:dB)
+public Action Player_Connect(Handle gameevent, const char[] Name, bool dB)
 {
     // If our players are not bots...
     if (!GetEventBool(gameevent, "bot"))
     {
         // Make sure to set event strings properly
-        decl String:address[64], String:name[MAX_NAME_LENGTH], String:networkid[32];
+        char address[64];
+        char name[MAX_NAME_LENGTH];
+        char networkid[32];
+
         GetEventString(gameevent, "address", address, sizeof(address));
         GetEventString(gameevent, "name", name, sizeof(name));
         GetEventString(gameevent, "networkid", networkid, sizeof(networkid));
@@ -54,7 +60,7 @@ public Action:Player_Connect(Handle:gameevent, const String:Name[], bool:dB)
         {
             LogToGame("\"%s<%d><%s><>\" connected, address \"%s\"", name, GetEventInt(gameevent, "userid"), networkid, address);
         }
-        
+
         // Set the IP address as nothing, no need to have the IP broadcast to everyone on the server. 
         SetEventString(gameevent, "address", "");
         return Plugin_Changed;
